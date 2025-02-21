@@ -3,7 +3,9 @@
 
 ## Introduction
 
-This project is a simple example of how to use Testcontainers to start a ScyllaDB container and connect to it in Java.
+Learn how to get started quickly with ScyllaDB using Testcontainers in Java.
+
+This example demonstrates a simple Java application that connects to a ScyllaDB container and performs some basic operations.
 
 ### Why use ScyllaDB?
 
