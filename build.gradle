@@ -12,8 +12,7 @@ repositories {
 
 dependencies {
     implementation 'org.testcontainers:scylladb:1.20.5'
-    implementation 'com.datastax.cassandra:cassandra-driver-core:3.11.3'  // This was missing
-    implementation 'org.slf4j:slf4j-simple:2.0.9'  // For logging
+    implementation 'com.datastax.cassandra:cassandra-driver-core:3.11.3' 
 }
 
 sourceSets {
