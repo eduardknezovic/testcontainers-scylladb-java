@@ -62,12 +62,13 @@ The command has executed the code from the `Main.java` file, which:
 - Creates a keyspace and table
 - Inserts some data
 - Queries the data
+- Stops the ScyllaDB container
 
 Check out the full code example here: [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
 
 ## Learn more
 
-Find out more about ScyllaDB [here](https://www.scylladb.com/).
-Find out more about Testcontainers [here](https://www.testcontainers.org/).
+Find out more about ScyllaDB [here](https://www.scylladb.com/)   
+Find out more about Testcontainers [here](https://www.testcontainers.org/)
 
 
