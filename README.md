@@ -41,11 +41,15 @@ If you see a welcome message, Docker is working properly. If you get an error, m
 
 ## How to run the project?
 
-Pull the project from the repository, go to the project root folder and run the following command to start the ScyllaDB container:
+Pull the project from the repository, go to the project root folder. 
+
+Then, execute the following command:
 
 ```bash
 gradle run
 ```
+
+This command will run the code from [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
 
 ### The expected output
 
