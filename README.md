@@ -70,7 +70,7 @@ In this example (and in very few lines of code) we have:
 - Queried the data
 - Stopped the ScyllaDB container
 
-Check out the full code example here: [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
+Check out the full code example (with comments) here: [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
 
 ## Learn more
 
