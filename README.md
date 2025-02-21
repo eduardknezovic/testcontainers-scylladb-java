@@ -53,7 +53,7 @@ This command will run the code from [Main.java](https://github.com/eduardknezovi
 
 ### The expected output
 
-If you've received the output below, you're all set.
+If you've received the output below, you're all good.
 
 ```bash
 # ...
