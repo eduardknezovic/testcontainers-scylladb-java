@@ -50,9 +50,11 @@ gradle run
 If you've received the output below, you're all set.
 
 ```bash
+# ...
 Retrieving all users:
 User: John Doe (Age: 30)
 User: Jane Doe (Age: 27)
+# ...
 ```
 
 ## Summary
