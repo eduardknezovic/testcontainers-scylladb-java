@@ -18,9 +18,9 @@ public class Main {
         
         try {
             scylladb.start();
-            System.out.println("✅ ScyllaDB container started successfully");
-            System.out.println("📦 Container IP: " + scylladb.getContainerIpAddress());
-            System.out.println("🔌 CQL Port: " + scylladb.getMappedPort(9042));
+            System.out.println("ScyllaDB container started successfully");
+            System.out.println("Container IP: " + scylladb.getContainerIpAddress());
+            System.out.println("CQL Port: " + scylladb.getMappedPort(9042));
 
             // Establish connection to ScyllaDB
             try (Cluster cluster = Cluster.builder()
@@ -53,13 +53,13 @@ public class Main {
                 System.out.println("\nRetrieving all users:");
                 ResultSet results = session.execute("SELECT * FROM users");
                 for (Row row : results) {
-                    System.out.printf("👤 User: %s (Age: %d)%n", 
+                    System.out.printf("User: %s (Age: %d)%n", 
                         row.getString("name"), 
                         row.getInt("age"));
                 }
             }
         } catch (Exception e) {
-            System.err.println("❌ Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
         } finally {
             // Ensure the container is stopped even if an error occurs
