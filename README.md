@@ -1,15 +1,18 @@
 
 # ScyllaDB Quickstart with Testcontainers in Java
 
+## Introduction
+
 This project is a simple example of how to use Testcontainers to start a ScyllaDB container and connect to it in Java.
 
-## Why use ScyllaDB?
+### Why use ScyllaDB?
 
 - Your apps run faster than with Cassandra, perfect for real-time data use cases
 - You need fewer servers to do the same work
 - It works with your Cassandra apps right now - no changes needed
+- Built-in auto-tuning capabilities reduce manual configuration and maintenance overhead
 
-## Why use Testcontainers?
+### Why use Testcontainers?
 
 - You get a real database on your computer in seconds
 - You can try new ideas fast without breaking anything
@@ -42,6 +45,8 @@ Pull the project from the repository, go to the project root folder and run the 
 gradle run
 ```
 
+### The expected output
+
 If you've received the output below, you're all set.
 
 ```bash
@@ -50,15 +55,16 @@ User: John Doe (Age: 30)
 User: Jane Doe (Age: 27)
 ```
 
-This is it. 
+## Summary
 
-The command has executed the code from the `Main.java` file, which:
-- Starts a ScyllaDB container
-- Connects to it
-- Creates a keyspace and table
-- Inserts some data
-- Queries the data
-- Stops the ScyllaDB container
+In this example (and in very few lines of code) we have:
+- Set up a ScyllaDB container
+- Started a ScyllaDB container
+- Connected to ScyllaDB
+- Created a keyspace and table
+- Inserted some data
+- Queried the data
+- Stopped the ScyllaDB container
 
 Check out the full code example here: [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
 
