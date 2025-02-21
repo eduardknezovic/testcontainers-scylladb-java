@@ -1,50 +1,30 @@
+
+
 plugins {
     id 'java'
+    id 'application'
 }
 
-// Remove the direct System.setProperty calls as they won't work here
-// Instead, configure SSL through Gradle's system properties
-
-allprojects {
-    repositories {
-        maven {
-            url "https://repo.maven.apache.org/maven2/"
-            content {
-                includeGroup "org.junit.jupiter"
-            }
-        }
-        mavenCentral()
-    }
+repositories {
+    mavenCentral()
 }
+
 
 dependencies {
-    // Scylla/Cassandra driver
-    implementation 'com.datastax.oss:java-driver-core:4.17.0'
-    
-    // Testing dependencies
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    testImplementation 'org.testcontainers:scylladb:1.20.5'
-} 
+    implementation 'org.testcontainers:scylladb:1.20.5'
+    implementation 'com.datastax.cassandra:cassandra-driver-core:3.11.3'  // This was missing
+    implementation 'org.slf4j:slf4j-simple:2.0.9'  // For logging
+}
 
 sourceSets {
-    test {
+    main {
         java {
-            srcDirs = ['.']
+            srcDirs = ['src']
         }
     }
 }
 
-test {
-    systemProperty "javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts"
-    systemProperty "javax.net.ssl.trustStorePassword", "changeit"
-    
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-        showExceptions true
-        showCauses true
-        showStackTraces true
-        showStandardStreams = true
-        exceptionFormat "full"
-    }
-} 
+application {
+    mainClass = 'Main'
+}
+
