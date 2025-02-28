@@ -1,8 +1,8 @@
 import org.testcontainers.scylladb.ScyllaDBContainer;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.cql.ResultSet;
+import com.datastax.oss.driver.api.core.cql.Row;
+import java.net.InetSocketAddress;
 import java.util.UUID;
 
 /**
@@ -19,20 +19,19 @@ public class Main {
         try {
             scylladb.start();
             System.out.println("ScyllaDB container started successfully");
-            System.out.println("Container IP: " + scylladb.getContainerIpAddress());
+            System.out.println("Container IP: " + scylladb.getHost());
             System.out.println("CQL Port: " + scylladb.getMappedPort(9042));
 
-            // Establish connection to ScyllaDB
-            try (Cluster cluster = Cluster.builder()
-                    .addContactPoint(scylladb.getContainerIpAddress())
-                    .withPort(scylladb.getMappedPort(9042))
-                    .build();
-                Session session = cluster.connect()) {
+            // Establish connection to ScyllaDB using the new driver
+            try (CqlSession session = CqlSession.builder()
+                    .addContactPoint(new InetSocketAddress(scylladb.getHost(), scylladb.getMappedPort(9042)))
+                    .withLocalDatacenter("datacenter1")
+                    .build()) {
 
-                // Create keyspace with SimpleStrategy for testing
+                // Create keyspace with NetworkTopologyStrategy instead of SimpleStrategy
                 System.out.println("Creating keyspace and table...");
                 session.execute("CREATE KEYSPACE IF NOT EXISTS test_keyspace WITH replication = "
-                    + "{'class': 'SimpleStrategy', 'replication_factor': 1}");
+                    + "{'class': 'NetworkTopologyStrategy', 'datacenter1': 1}");
                 session.execute("USE test_keyspace");
                 
                 // Create a table to store user information
