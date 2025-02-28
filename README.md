@@ -40,11 +40,11 @@ If you see a welcome message, Docker is working properly. If you get an error, m
 
 ## How to run the project?
 
-Pull the project from the repository, go to the project root folder. 
-
-Then, execute the following command:
+Execute the following commands:
 
 ```bash
+git clone https://github.com/eduardknezovic/testcontainers-scylladb-java.git
+cd testcontainers-scylladb-java
 ./gradlew run
 ```
 
