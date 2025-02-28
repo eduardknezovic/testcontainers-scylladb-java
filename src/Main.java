@@ -18,7 +18,7 @@ public class Main {
         
         try {
             scylladb.start();
-            System.out.println("ScyllaDB container started successfully");
+            System.out.println("\nScyllaDB container started successfully\n");
             System.out.println("Container IP: " + scylladb.getHost());
             System.out.println("CQL Port: " + scylladb.getMappedPort(9042));
 
@@ -29,7 +29,7 @@ public class Main {
                     .build()) {
 
                 // Create keyspace with NetworkTopologyStrategy instead of SimpleStrategy
-                System.out.println("Creating keyspace and table...");
+                System.out.println("\nCreating keyspace and table...");
                 session.execute("CREATE KEYSPACE IF NOT EXISTS test_keyspace WITH replication = "
                     + "{'class': 'NetworkTopologyStrategy', 'datacenter1': 1}");
                 session.execute("USE test_keyspace");
@@ -61,9 +61,8 @@ public class Main {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Ensure the container is stopped even if an error occurs
-            System.out.println("\nStopping ScyllaDB container...");
-            scylladb.stop();
+            scylladb.stop(); // Ensure the container is stopped even if an error occurs
+            System.out.println("\nScyllaDB container stopped\n");
         }
     }
 }
