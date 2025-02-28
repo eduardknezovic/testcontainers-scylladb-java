@@ -9,6 +9,11 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 dependencies {
     implementation 'org.testcontainers:scylladb:1.20.5'
