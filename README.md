@@ -25,11 +25,10 @@ This example demonstrates a simple Java application that connects to a ScyllaDB 
 
 Before we begin, make sure you have:
 
-- Java 17 installed
-- Gradle 8.12 for dependency management
+- Java 21 installed
 - Docker installed and running (required for Testcontainers)
 
-Check with `java -version` and `gradle --version` to make sure you have the correct versions installed.
+Check with `java -version` to make sure you have the correct version installed.
 
 To verify Docker is running correctly, run:
 
@@ -46,10 +45,12 @@ Pull the project from the repository, go to the project root folder.
 Then, execute the following command:
 
 ```bash
-gradle run
+./gradlew run
 ```
 
-This command will run the code from [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
+Besides running the code, this command will ensure the dependencies are downloaded and the project is built.
+
+It will run the code from [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
 
 ### The expected output
 
