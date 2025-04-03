@@ -30,13 +30,27 @@ Testcontainers brings real ScyllaDB instances to your Java tests—no mocks, no 
 
 ## Before You Begin: Setup Checklist
 
-(...)
+- Java 11 or higher installed
+- Maven or Gradle project configured
+- Docker running on your machine
+- Basic familiarity with ScyllaDB concepts
 
 ## Tutorial: Building a ScyllaDB Test Step-by-Step
 
 ### Step 1: Configure Your Project Dependencies
 
-(...)
+Before we begin, make sure you have:
+
+- Java 21 installed
+- Docker installed and running (required for Testcontainers)
+
+Check with `java -version` to make sure you have the correct version installed.
+
+To verify Docker is running correctly, run:
+
+```bash
+docker run hello-world
+```
 
 ### Step 2: Launch ScyllaDB in a Container
 
