@@ -91,7 +91,9 @@ Take your testing further:
 - **Test failure scenarios** - Simulate network partitions or node failures
 
 ```java
+
 // Example: Creating a multi-node cluster
+Network network = Network.newNetwork();
 GenericContainer<?> scyllaNode1 = new GenericContainer<>(DockerImageName.parse("scylladb/scylla:5.2"))
     .withExposedPorts(9042)
     .withNetwork(network)
@@ -102,6 +104,9 @@ GenericContainer<?> scyllaNode2 = new GenericContainer<>(DockerImageName.parse("
     .withNetwork(network)
     .withNetworkAliases("scylla-node2")
     .withCommand("--seeds=scylla-node1");
+
+scyllaNode1.start();
+scyllaNode2.start();
 ```
 
 ## Wrap-Up: Master ScyllaDB Testing with Confidence
