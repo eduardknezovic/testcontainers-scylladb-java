@@ -261,6 +261,6 @@ Try it in your project, customize it for your specific needs, and share your exp
 ## Resources: Dive Deeper
 
 - [ScyllaDB Documentation](https://docs.scylladb.com/)
-- [Testcontainers for Java](https://www.testcontainers.org/)
-- [GitHub Repository with Examples](https://github.com/scylladb/scylladb-testcontainers-java)
+- [Testcontainers](https://www.testcontainers.org/)
+- [GitHub Repository with Examples](https://github.com/eduardknezovic/testcontainers-scylladb-java)
 - [ScyllaDB University](https://university.scylladb.com/) - Free courses to master ScyllaDB
