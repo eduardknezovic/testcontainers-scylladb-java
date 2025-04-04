@@ -21,6 +21,7 @@ dependencies {
     // Updated implementation/test dependencies 
     implementation 'org.testcontainers:scylladb:1.20.5'
     implementation 'com.datastax.oss:java-driver-core:4.17.0'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
     
     // Updated JUnit dependencies to newer versions
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'

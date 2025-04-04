@@ -45,7 +45,7 @@ Execute the following commands:
 ```bash
 git clone https://github.com/eduardknezovic/testcontainers-scylladb-java.git
 cd testcontainers-scylladb-java
-./gradlew run
+./gradlew run 
 ```
 
 Besides running the code, this command will ensure the dependencies are downloaded and the project is built.
@@ -62,6 +62,14 @@ Retrieving all users:
 User: John Doe (Age: 30)
 User: Jane Doe (Age: 27)
 # ...
+```
+
+## Running the test file
+
+Alternatively, you can run test file
+
+```bash
+./gradlew clean test --no-daemon
 ```
 
 ## Summary

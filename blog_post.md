@@ -52,27 +52,169 @@ To verify Docker is running correctly, run:
 docker run hello-world
 ```
 
+In your `build.gradle` file add the following dependencies
+
+```gradle
+dependencies {
+    implementation 'org.testcontainers:scylladb:1.20.5'
+    implementation 'com.datastax.oss:java-driver-core:4.17.0'
+    testImplementation 'org.testcontainers:scylladb:1.20.5'
+    testImplementation 'com.datastax.oss:java-driver-core:4.17.0'
+
+    // and others if you don't have them yet
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+}
+```
+
 ### Step 2: Launch ScyllaDB in a Container
 
-Create a test class that starts a ScyllaDB container:
+Create a `ScyllaDbExamleTest.java` file.
 
-(...)
+You can copy and paste the code provided below.
+
+This code will start a fresh ScyllaDB instance for every
+test in this file in the `setUp` method.
+
+To ensure the instance gets shut down after every test, 
+we've created the `tearDown` method, too.
+
+```java
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.testcontainers.scylladb.ScyllaDBContainer;
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.cql.ResultSet;
+import com.datastax.oss.driver.api.core.cql.Row;
+
+import java.net.InetSocketAddress;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class ScyllaDbExampleTest {
+
+    private ScyllaDBContainer scylladb;
+    private CqlSession session;
+
+    @Before
+    public void setUp() {
+        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
+            .withExposedPorts(9042);
+        scylladb.start();
+    }
+
+    @After
+    public void tearDown() {
+        if (session != null) {
+            session.close();
+        }
+        if (scylladb != null) {
+            scylladb.stop();
+        }
+    }
+
+} 
+```
 
 ### Step 3: Connect via the Java Driver
 
-(...)
+We connect to ScyllaDB container by creating a new session. 
+
+To do so, we need to update our `setUp` method:
+
+```java
+    @Before
+    public void setUp() {
+        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
+            .withExposedPorts(9042);
+        scylladb.start();
+
+        // Add the following code to create a connection to ScyllaDB:
+        session = CqlSession.builder()
+            .addContactPoint(new InetSocketAddress(scylladb.getHost(), scylladb.getMappedPort(9042)))
+            .withLocalDatacenter("datacenter1")
+            .build();
+    }
+```
 
 ### Step 4: Define Your Schema
 
-(...)
+Once we have our ScyllaDB instance running and our connection set up,
+we can create a schema for our (currently empty) database
+
+Let's define the schema for our freshly created ScyllaDB instance:
+
+```java
+
+    @Before
+    public void setUp() {
+        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
+            .withExposedPorts(9042);
+        scylladb.start();
+
+        session = CqlSession.builder()
+            .addContactPoint(new InetSocketAddress(scylladb.getHost(), scylladb.getMappedPort(9042)))
+            .withLocalDatacenter("datacenter1")
+            .build();
+
+        // Add the following code to create an example schema
+        session.execute("CREATE KEYSPACE IF NOT EXISTS test_keyspace WITH replication = "
+            + "{'class': 'NetworkTopologyStrategy', 'datacenter1': 1}");
+        session.execute("USE test_keyspace");
+        session.execute("CREATE TABLE IF NOT EXISTS users (id UUID PRIMARY KEY, name text, age int)");
+    }
+
+```
 
 ### Step 5: Insert and Query Data
 
-(...)
+Once we have prepared the ScyllaDB, we can run operations on it.
+
+To do so, let's add a new method to our `ScyllaDbExampleTest` class:
+
+```java
+
+    @Test
+    public void testScyllaDBOperations() {
+
+        // Insert sample data
+        UUID user1Id = UUID.randomUUID();
+        UUID user2Id = UUID.randomUUID();
+
+        // Add two new users
+        session.execute("INSERT INTO users (id, name, age) VALUES (?, ?, ?)", user1Id, "John Doe", 30);
+        session.execute("INSERT INTO users (id, name, age) VALUES (?, ?, ?)", user2Id, "Jane Doe", 27);
+
+        // Retrieve and verify the inserted data
+        ResultSet results = session.execute("SELECT * FROM users");
+        int count = 0;
+        for (Row row : results) {
+            assertNotNull(row.getString("name"));
+            assertNotNull(row.getInt("age"));
+            count++;
+        }
+
+        assertEquals(2, count); // Ensure two new users are present 
+    }
+```
 
 ### Step 6: Run and Validate the Test
 
-(...)
+The test is done!
+
+The repository of the full code example can be found here: https://github.com/eduardknezovic/testcontainers-scylladb-java
+
+In that example, this command was used to execute the test, but you are 
+free to use whatever you're comfortable with.
+
+```bash
+./gradlew clean test --no-daemon
+```
 
 ## Performance Spotlight: Why This Approach Wins
 
@@ -91,15 +233,14 @@ Take your testing further:
 - **Test failure scenarios** - Simulate network partitions or node failures
 
 ```java
-
 // Example: Creating a multi-node cluster
 Network network = Network.newNetwork();
-GenericContainer<?> scyllaNode1 = new GenericContainer<>(DockerImageName.parse("scylladb/scylla:5.2"))
+    scyllaNode1 = new ScyllaDBContainer("scylladb/scylla:6.2")
     .withExposedPorts(9042)
     .withNetwork(network)
     .withNetworkAliases("scylla-node1");
 
-GenericContainer<?> scyllaNode2 = new GenericContainer<>(DockerImageName.parse("scylladb/scylla:5.2"))
+scyllaNode2 = new ScyllaDBContainer("scylladb/scylla:6.2")
     .withExposedPorts(9042)
     .withNetwork(network)
     .withNetworkAliases("scylla-node2")
