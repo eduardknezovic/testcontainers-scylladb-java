@@ -13,7 +13,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ScyllaDbExampleTest {
+public class ScyllaDBExampleTest {
 
     private ScyllaDBContainer scylladb;
     private CqlSession session;

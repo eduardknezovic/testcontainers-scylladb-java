@@ -56,8 +56,6 @@ In your `build.gradle` file add the following dependencies
 
 ```gradle
 dependencies {
-    implementation 'org.testcontainers:scylladb:1.20.5'
-    implementation 'com.datastax.oss:java-driver-core:4.17.0'
     testImplementation 'org.testcontainers:scylladb:1.20.5'
     testImplementation 'com.datastax.oss:java-driver-core:4.17.0'
 
@@ -71,7 +69,7 @@ dependencies {
 
 ### Step 2: Launch ScyllaDB in a Container
 
-Create a `ScyllaDbExamleTest.java` file.
+Create a `ScyllaDBExampleTest.java` file.
 
 You can copy and paste the code provided below.
 
@@ -96,7 +94,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ScyllaDbExampleTest {
+public class ScyllaDBExampleTest {
 
     private ScyllaDBContainer scylladb;
     private CqlSession session;
@@ -175,7 +173,7 @@ Let's define the schema for our freshly created ScyllaDB instance:
 
 Once we have prepared the ScyllaDB, we can run operations on it.
 
-To do so, let's add a new method to our `ScyllaDbExampleTest` class:
+To do so, let's add a new method to our `ScyllaDBExampleTest` class:
 
 ```java
 
@@ -205,9 +203,7 @@ To do so, let's add a new method to our `ScyllaDbExampleTest` class:
 
 ### Step 6: Run and Validate the Test
 
-The test is done!
-
-The repository of the full code example can be found here: https://github.com/eduardknezovic/testcontainers-scylladb-java
+Your test is now complete and ready to be executed!
 
 In that example, this command was used to execute the test, but you are 
 free to use whatever you're comfortable with.
@@ -215,6 +211,12 @@ free to use whatever you're comfortable with.
 ```bash
 ./gradlew clean test --no-daemon
 ```
+
+If successfully executed, you will see the container start in the logs, and the test will pass if the assertions hold
+
+### Full code example
+
+The repository of the full code example can be found here: https://github.com/eduardknezovic/testcontainers-scylladb-java
 
 ## Performance Spotlight: Why This Approach Wins
 
