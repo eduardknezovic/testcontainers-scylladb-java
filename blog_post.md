@@ -1,38 +1,23 @@
-
 # How to Use Java Testcontainers with ScyllaDB
+
+## 
 
 ## Introduction: Fast-Track Your ScyllaDB Testing
 
-Why wrestle with slow, clunky database testing? This tutorial gets you up and running with ScyllaDB and Testcontainers in Java—fast.
+Why wrestle with all the complexities of DB configuration for each round of integration testing? In this blog post, I will explain how you can use the Testcontainers library to provide lightweight, throwaway instances of ScyllaDB for unit testing. I’ll go through a hands-on example that you can run yourself, which includes creating the database instance and testing against it.   
+ 
 
-- **Spin up ScyllaDB in seconds** - No complex installation required
-- **Test against real database behavior** - No mocks means no surprises in production
-- **Simplify your development workflow** - Consistent environments across your team
+## Testcontainers: a Valuable Tool for ScyllaDB Testing
 
-## Why ScyllaDB Powers Modern Apps
+There are different ways to test your code. Part of that process will include testing different modules like your database. By using Testcontainers, you can define your dependencies in code. When you run your tests, a ScyllaDB container will be created and then deleted. This allows you to test your application against a real instance of the database without having to worry about complex environment configurations. This also ensures that the database setup has no effecton the production environment. 
 
-ScyllaDB isn't just fast—it's built for today's data-hungry apps.
+The Testcontainers ScyllaDB integration I’ll showcase here works with Java. However, you can also use it with [Go](https://testcontainers.com/modules/scylladb/?language=go), [Python](https://testcontainers.com/modules/scylladb/?language=python), and [Node.js](https://testcontainers.com/modules/scylladb/?language=nodejs).
 
-- **Outruns Cassandra with lower latency** - Up to 10x better performance
-- **Scales efficiently on fewer nodes** - Reduce infrastructure costs
-- **Drop-in CQL compatibility** - Use familiar Cassandra tools and drivers
-- **Self-tuning cuts ops overhead** - Focus on development, not database tuning
+Some of the advantages of using Testcontainer with ScyllaDB:
 
-Perfect for real-time analytics, IoT data processing, and high-throughput applications where milliseconds matter.
-
-## Why Testcontainers?
-
-Say you want to test your application against a real database.
-
-Normally, to implement this setup, you would need to go over time-consuming, error-prone process.
-
-Using Testcontainers, you can spin up a ScyllaDB instance in seconds and write tests that validate your entire order flow—from creation to fulfillment—against a real database, without worrying about affecting your production environment.
-
-Testcontainers brings real ScyllaDB instances to your Java tests—no mocks, no hassle.
-
-- **Launches Dockerized DBs on demand** - Fresh environment for every test run
-- **Isolates tests with throwaway containers** - No test interference or state leakage
-- **Pairs perfectly with ScyllaDB's speed** - Fast startup complements ScyllaDB's performance
+- **Launches Dockerized DBs on demand** \- So you get a fresh environment for every test run  
+- **Isolates tests with throwaway containers** \- So there’s no test interference or state leakage  
+- **Pairs perfectly with ScyllaDB's speed** \- The fast startup complements ScyllaDB's performance
 
 ## Tutorial: Building a ScyllaDB Test Step-by-Step
 
@@ -40,21 +25,21 @@ Testcontainers brings real ScyllaDB instances to your Java tests—no mocks, no 
 
 Before we begin, make sure you have:
 
-- [Java 21 or newer](https://www.oracle.com/java/technologies/downloads/#java24) installed
-- [Docker](https://www.docker.com/get-started/) installed and running (required for Testcontainers)
+- [Java 21 or newer](https://www.oracle.com/java/technologies/downloads/#java24) installed  
+- [Docker](https://www.docker.com/get-started/) installed and running (required for Testcontainers)  
 - [Gradle](https://gradle.org/) or [Maven](https://maven.apache.org/) project configuration
 
 Check with `java -version` to make sure you have the correct version installed.
 
-To verify Docker is running correctly, run:
+To verify that Docker is running correctly, run:
 
-```bash
+```
 docker run hello-world
 ```
 
 In your `build.gradle` file add the following dependencies
 
-```gradle
+```
 dependencies {
     testImplementation 'org.testcontainers:scylladb:1.20.5'
     testImplementation 'com.datastax.oss:java-driver-core:4.17.0'
@@ -73,11 +58,9 @@ Create a `ScyllaDBExampleTest.java` file.
 
 You can copy and paste the code provided below.
 
-This code will start a fresh ScyllaDB instance for every
-test in this file in the `setUp` method.
+This code will start a fresh ScyllaDB instance for every test in this file in the `setUp` method.
 
-To ensure the instance gets shut down after every test, 
-we've created the `tearDown` method, too.
+To ensure the instance gets shut down after every test, we've created the `tearDown` method, too.
 
 ```java
 import org.junit.After;
@@ -101,8 +84,8 @@ public class ScyllaDBExampleTest {
 
     @Before
     public void setUp() {
-        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
-            .withExposedPorts(9042);
+        scylladb = new ScyllaDBContainer("scylladb/scylla:2025.1")
+            .withExposedPorts(9042, 19042);
         scylladb.start();
     }
 
@@ -121,15 +104,15 @@ public class ScyllaDBExampleTest {
 
 ### Step 3: Connect via the Java Driver
 
-We connect to ScyllaDB container by creating a new session. 
+We connect to the ScyllaDB container by creating a new session.
 
 To do so, we need to update our `setUp` method:
 
 ```java
     @Before
     public void setUp() {
-        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
-            .withExposedPorts(9042);
+        scylladb = new ScyllaDBContainer("scylladb/scylla:2025.1")
+            .withExposedPorts(9042, 19042);
         scylladb.start();
 
         // Add the following code to create a connection to ScyllaDB:
@@ -142,8 +125,7 @@ To do so, we need to update our `setUp` method:
 
 ### Step 4: Define Your Schema
 
-Once we have our ScyllaDB instance running and our connection set up,
-we can create a schema for our (currently empty) database
+Once we have our ScyllaDB instance running and our connection set up, we can create a schema for our (currently empty) database.
 
 Let's define the schema for our freshly created ScyllaDB instance:
 
@@ -151,8 +133,8 @@ Let's define the schema for our freshly created ScyllaDB instance:
 
     @Before
     public void setUp() {
-        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
-            .withExposedPorts(9042);
+        scylladb = new ScyllaDBContainer("scylladb/scylla:2025.1")
+            .withExposedPorts(9042, 19042);
         scylladb.start();
 
         session = CqlSession.builder()
@@ -171,7 +153,7 @@ Let's define the schema for our freshly created ScyllaDB instance:
 
 ### Step 5: Insert and Query Data
 
-Once we have prepared the ScyllaDB, we can run operations on it.
+Once we have prepared the ScyllaDB instance, we can run operations on it.
 
 To do so, let's add a new method to our `ScyllaDBExampleTest` class:
 
@@ -203,12 +185,11 @@ To do so, let's add a new method to our `ScyllaDBExampleTest` class:
 
 ### Step 6: Run and Validate the Test
 
-Your test is now complete and ready to be executed!
+Your test is now complete and ready to be executed\!
 
-In that example, this command was used to execute the test, but you are 
-free to use whatever you're comfortable with.
+In that example, this command was used to execute the test, but you are free to use whatever you're comfortable with.
 
-```bash
+```
 ./gradlew clean test --no-daemon
 ```
 
@@ -216,34 +197,34 @@ If successfully executed, you will see the container start in the logs, and the 
 
 ### Full code example
 
-The repository of the full code example can be found here: https://github.com/eduardknezovic/testcontainers-scylladb-java
+The repository of the full code example can be found here: [https://github.com/eduardknezovic/testcontainers-scylladb-java](https://github.com/eduardknezovic/testcontainers-scylladb-java)
 
 ## Performance Spotlight: Why This Approach Wins
 
-- **Container startup in seconds** - ScyllaDB's efficient design means quick test initialization
-- **Real database behavior** - Test against actual CQL responses, not simulated ones
-- **Low-latency queries** - Even in a container, ScyllaDB's shard-per-core architecture delivers microsecond responses
-- **Isolated test environments** - Each test run gets a pristine database state
+- **Container startup in seconds** \- ScyllaDB's efficient design means quick test initialization  
+- **Real database behavior** \- test against actual CQL responses, not simulated ones  
+- **Low-latency queries** \- even in a container, ScyllaDB's shard-per-core architecture delivers microsecond responses  
+- **Isolated test environments** \- each test run gets a pristine database state
 
 ## Level Up: Extending Your ScyllaDB Tests
 
 Take your testing further:
 
-- **Test schema migrations** - Verify your database evolution scripts work correctly
-- **Simulate multi-node clusters** - Use multiple containers to test distributed scenarios
-- **Benchmark performance** - Measure ScyllaDB's throughput under various workloads
-- **Test failure scenarios** - Simulate network partitions or node failures
+- **Test schema migrations** \- Verify that your database evolution scripts work correctly  
+- **Simulate multi-node clusters** \- Use multiple containers to test distributed scenarios  
+- **Benchmark performance** \- Measure ScyllaDB's throughput under various workloads  
+- **Test failure scenarios** \- Simulate network partitions or node failures
 
 ```java
 // Example: Creating a multi-node cluster
 Network network = Network.newNetwork();
-    scyllaNode1 = new ScyllaDBContainer("scylladb/scylla:6.2")
-    .withExposedPorts(9042)
+    scyllaNode1 = new ScyllaDBContainer("scylladb/scylla:2025.1")
+    .withExposedPorts(9042, 19042)
     .withNetwork(network)
     .withNetworkAliases("scylla-node1");
 
-scyllaNode2 = new ScyllaDBContainer("scylladb/scylla:6.2")
-    .withExposedPorts(9042)
+scyllaNode2 = new ScyllaDBContainer("scylladb/scylla:2025.1")
+    .withExposedPorts(9042, 19042)
     .withNetwork(network)
     .withNetworkAliases("scylla-node2")
     .withCommand("--seeds=scylla-node1");
@@ -256,11 +237,12 @@ scyllaNode2.start();
 
 You've built a fast, real ScyllaDB test in Java that provides genuine database behavior without the overhead of a permanent installation. This approach gives you confidence that your code will work correctly in production.
 
-Try it in your project, customize it for your specific needs, and share your experience with the community!
+You can try it with an [example app](https://university.scylladb.com/courses/scylla-essentials-overview/lessons/quick-wins-install-and-run-scylla/topic/building-an-application-lab/) on ScyllaDB University, customize it to your project and specific needs, and share your experience with the [community](http://forum.scylladb.com)\!
 
 ## Resources: Dive Deeper
 
-- [ScyllaDB Documentation](https://docs.scylladb.com/)
-- [Testcontainers](https://www.testcontainers.org/)
-- [GitHub Repository with Examples](https://github.com/eduardknezovic/testcontainers-scylladb-java)
-- [ScyllaDB University](https://university.scylladb.com/) - Free courses to master ScyllaDB
+- [ScyllaDB Documentation](https://docs.scylladb.com/)  
+- [Testcontainers](https://www.testcontainers.org/)  
+- [GitHub Repository with Examples](https://github.com/eduardknezovic/testcontainers-scylladb-java)  
+- [ScyllaDB University](https://university.scylladb.com/) \- Free courses to master ScyllaDB
+
