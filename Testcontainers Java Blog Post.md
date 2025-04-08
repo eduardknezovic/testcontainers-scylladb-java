@@ -42,7 +42,7 @@ In your `build.gradle` file add the following dependencies
 ```
 dependencies {
     testImplementation 'org.testcontainers:scylladb:1.20.5'
-    testImplementation 'com.scylladb:java-driver-core:4.17.0'
+    testImplementation 'com.datastax.oss:java-driver-core:4.17.0'
 
     // and others if you don't have them yet
     implementation 'ch.qos.logback:logback-classic:1.4.11'
