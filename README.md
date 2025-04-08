@@ -45,32 +45,10 @@ Execute the following commands:
 ```bash
 git clone https://github.com/eduardknezovic/testcontainers-scylladb-java.git
 cd testcontainers-scylladb-java
-./gradlew run 
+./gradlew clean test --no-daemon
 ```
 
 Besides running the code, this command will ensure the dependencies are downloaded and the project is built.
-
-It will run the code from [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
-
-### The expected output
-
-If you've received the output below, you're all good.
-
-```bash
-# ...
-Retrieving all users:
-User: John Doe (Age: 30)
-User: Jane Doe (Age: 27)
-# ...
-```
-
-## Running the test file
-
-Alternatively, you can run test file
-
-```bash
-./gradlew clean test --no-daemon
-```
 
 ## Summary
 
@@ -83,11 +61,10 @@ In this example (and in very few lines of code) we have:
 - Queried the data
 - Stopped the ScyllaDB container
 
-Check out the full code example (with comments) here: [Main.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/src/Main.java)
+Check out the full code example (with comments) here: [ScyllaDBExampleTest.java](https://github.com/eduardknezovic/testcontainers-scylladb-java/blob/main/test/java/ScyllaDBExampleTest.java)
 
 ## Learn more
 
 Find out more about ScyllaDB [here](https://www.scylladb.com/)   
 Find out more about Testcontainers [here](https://www.testcontainers.org/)
-
 

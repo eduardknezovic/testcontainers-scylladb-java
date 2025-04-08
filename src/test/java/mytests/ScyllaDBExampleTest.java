@@ -20,8 +20,8 @@ public class ScyllaDBExampleTest {
 
     @Before
     public void setUp() {
-        scylladb = new ScyllaDBContainer("scylladb/scylla:6.2")
-            .withExposedPorts(9042);
+        scylladb = new ScyllaDBContainer("scylladb/scylla:2025.1")
+            .withExposedPorts(9042, 19042);
         scylladb.start();
 
         session = CqlSession.builder()
